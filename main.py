@@ -7,12 +7,7 @@ text_line = " 1. (1) This Act may be cited as the Coronavirus Disease 2019 (COVI
 
 
 def do_work():
-    DocIterator.split_to_paragraph("09_test_reader.pdf")
-    doc_iterator = DocIterator()
-    doc_iterator.peek_word(0, "")
-
-
-    #doc_iterator.print_list()
+    doc_iterator = DocIterator("09_test_reader.pdf")
     doc_parser = SectionParser(doc_iterator)
     print(doc_parser.get_dict())
 
