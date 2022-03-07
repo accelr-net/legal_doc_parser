@@ -23,73 +23,95 @@ class SectionParser:
     LEVEL_0 = 0
     LEVEL_1 = 1
     LEVEL_2 = 2
+    LEVEL_3 = 3
 
-    def __init__(self, doc_iterator: DocIterator, level=0):
+    def __init__(self, doc_iterator: DocIterator, para_pattern: str, level=0):
         self.type_name = None
         self.level = level
         self.child_list = []
         self.test_int = 0
-        self.name = ""
+        self.name = "hii"
+        self.paragraph_text = para_pattern
         self.parse_doc(doc_iterator)
 
     def parse_doc(self, doc_iterator: DocIterator):
         while True:
-            # paragraph_text = doc_iterator.peek_word()
-            print("while loop")
+            self.name = doc_iterator.peek_word()
             paragraph_type = self.get_para_type(doc_iterator.peek_word())
-
             if paragraph_type == ParaType.PARA_TYPE_SECTION:
                 self.name = doc_iterator.get_word()
-                print("Again a section ")
-                p = SectionParser(doc_iterator, self.level + 1)
+                p = SectionParser(doc_iterator, self.name, self.level + 1)
                 self.child_list.append(p)
             elif paragraph_type == ParaType.PARA_TYPE_PARA:
-                print("in the paragraph")
                 p = ParaParser(doc_iterator)
                 self.child_list.append(p)
             elif paragraph_type == ParaType.PARA_TYPE_END_SECTION:
                 break
             else:
+                break
                 raise Exception("Unexpected para type in document")
 
     def get_para_type(self, paragraph):
-        print(paragraph + " getting -para-type")
         if self.level == SectionParser.LEVEL_0:
-            print("Came to LEVEL_0")
+            print("Came to LEVEL_0- " + self.name)
             if re.findall(SectionParser.PATTERN_LEVEL_1, paragraph):
-                print("Came to LEVEL_0 patter 1. , 2.")
+                print("Text contains pattern 1. , 2.")
                 return ParaType.PARA_TYPE_SECTION
             elif re.findall(SectionParser.PATTERN_LEVEL_2, paragraph) or re.findall(SectionParser.PATTERN_LEVEL_3, paragraph):
-                print("came level 1")
+                print("Text contains pattern (1) or (a) ..")
                 return ParaType.PARA_TYPE_ERROR
+            elif paragraph == "final@doc@harshana":
+                return ParaType.PARA_TYPE_END_SECTION
             elif paragraph:
+                print("Text contains pattern para")
                 return ParaType.PARA_TYPE_PARA
             else:
                 return ParaType.PARA_TYPE_ERROR
         elif self.level == SectionParser.LEVEL_1:
-            print("Came to LEVEL_1")
+            print("Came to LEVEL_1- " + self.name)
             if re.findall(SectionParser.PATTERN_LEVEL_1, paragraph):
-                return ParaType.PARA_TYPE_SECTION
+                print("Text contains pattern 1. , 2.")
+                return ParaType.PARA_TYPE_END_SECTION
             elif re.findall(SectionParser.PATTERN_LEVEL_2, paragraph):
-                print("Came to LEVEL_1 pattern (1) , (2)")
+                print("Text contains pattern (1)")
                 return ParaType.PARA_TYPE_SECTION
             elif re.findall(SectionParser.PATTERN_LEVEL_3, paragraph):
                 return ParaType.PARA_TYPE_ERROR
+            elif paragraph == "final@doc@harshana":
+                return ParaType.PARA_TYPE_END_SECTION
             elif paragraph:
                 print("Came to LEVEL_1 paragraph")
                 return ParaType.PARA_TYPE_PARA
             else:
-                return ParaType.PARA_TYPE_ERROR
+                print("Came to LEVEL_1 null")
+                return ParaType.PARA_TYPE_END_SECTION
         elif self.level == SectionParser.LEVEL_2:
-            print("Came to LEVEL_2")
+            print("Came to LEVEL_2- " + self.name)
             if re.findall(SectionParser.PATTERN_LEVEL_1, paragraph):
-                return ParaType.PARA_TYPE_SECTION
+                print("Text contains pattern 1. , 2.")
+                return ParaType.PARA_TYPE_END_SECTION
             elif re.findall(SectionParser.PATTERN_LEVEL_2, paragraph):
-                return ParaType.PARA_TYPE_ERROR
+                return ParaType.PARA_TYPE_END_SECTION
             elif re.findall(SectionParser.PATTERN_LEVEL_3, paragraph):
-                return ParaType.PARA_TYPE_ERROR
+                return ParaType.PARA_TYPE_SECTION
+            elif paragraph == "final@doc@harshana":
+                return ParaType.PARA_TYPE_END_SECTION
             elif paragraph:
-                print("Came to LEVEL_2 pattern paragraph")
+                print("pattern paragraph")
+                return ParaType.PARA_TYPE_PARA
+            else:
+                return ParaType.PARA_TYPE_END_SECTION
+        elif self.level == SectionParser.LEVEL_3:
+            print("Came to LEVEL_3- " + self.name)
+            if re.findall(SectionParser.PATTERN_LEVEL_1, paragraph):
+                print("Text contains pattern 1. , 2.")
+                return ParaType.PARA_TYPE_END_SECTION
+            elif re.findall(SectionParser.PATTERN_LEVEL_2, paragraph):
+                return ParaType.PARA_TYPE_END_SECTION
+            elif re.findall(SectionParser.PATTERN_LEVEL_3, paragraph):
+                return ParaType.PARA_TYPE_END_SECTION
+            elif paragraph:
+                print("Came to LEVEL_3 pattern paragraph")
                 return ParaType.PARA_TYPE_PARA
             else:
                 return ParaType.PARA_TYPE_ERROR
@@ -99,15 +121,19 @@ class SectionParser:
     def get_dict(self):
         child_dict_list = []
         for child in self.child_list:
+            print(child)
             child_dict_list.append(child.get_dict())
 
         dictionary = {
             "level": self.level,
-            "section_name" : self.name,
+            "section_name": self.paragraph_text,
             "name": self.type_name,
-            "paragraphs": child_dict_list
+            "list": child_dict_list
         }
         return dictionary
 
     def print_list(self):
-        print(self.child_list)
+        print(self.paragraph_text)
+
+
+
