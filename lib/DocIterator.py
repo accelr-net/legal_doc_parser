@@ -1,4 +1,3 @@
-import re
 from builtins import Exception
 from pyxpdf import Document
 
@@ -42,6 +41,3 @@ class DocIterator:
         result = self.pdf_text_list[0]
         self.pdf_text_list.pop(0)
         return result
-
-
-

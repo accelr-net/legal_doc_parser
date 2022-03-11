@@ -1,7 +1,6 @@
 from enum import Enum
 import re
 from lib.DocIterator import DocIterator
-from lib.ParserBase import ParserBase
 from lib.ParaParser import ParaParser
 
 
@@ -48,7 +47,6 @@ class SectionParser:
             elif paragraph_type == ParaType.PARA_TYPE_END_SECTION:
                 break
             else:
-                break
                 raise Exception("Unexpected para type in document")
 
     def get_para_type(self, paragraph):
@@ -57,7 +55,8 @@ class SectionParser:
             if re.findall(SectionParser.PATTERN_LEVEL_1, paragraph):
                 print("Text contains pattern 1. , 2.")
                 return ParaType.PARA_TYPE_SECTION
-            elif re.findall(SectionParser.PATTERN_LEVEL_2, paragraph) or re.findall(SectionParser.PATTERN_LEVEL_3, paragraph):
+            elif re.findall(SectionParser.PATTERN_LEVEL_2, paragraph) or re.findall(SectionParser.PATTERN_LEVEL_3,
+                                                                                    paragraph):
                 print("Text contains pattern (1) or (a) ..")
                 return ParaType.PARA_TYPE_ERROR
             elif paragraph == "final@doc@harshana":
@@ -134,6 +133,3 @@ class SectionParser:
 
     def print_list(self):
         print(self.paragraph_text)
-
-
-

@@ -1,4 +1,3 @@
-from lib.DocIterator import DocIterator
 
 
 class ParserBase:
@@ -10,4 +9,3 @@ class ParserBase:
 
     def get_dict(self):
         raise NotImplementedError('You need to define a speak method!')
-

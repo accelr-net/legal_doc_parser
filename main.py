@@ -12,10 +12,7 @@ def do_work():
     with open(folder_name, "w") as outfile:
         outfile.write(json_object)
         print("json file -" + folder_name + " was created.")
-# Press the green button in the gutter to run the script.
 
 
 if __name__ == '__main__':
     do_work()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -1,8 +1,7 @@
-from lib.ParserBase import ParserBase
 from lib.DocIterator import DocIterator
 
 
-class ParaParser(ParserBase):
+class ParaParser:
 
     def __init__(self, doc_iterator: DocIterator):
         self.text = ""
